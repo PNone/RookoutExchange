@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { CURRENCIES } from "../helpers/parseExchanges";
-// TODO Remove addExchange
+
 function ExchangeInput({ addExchangePair }) {
     const [fromCurrency, setFromCurrency] = useState('USD');
     const [toCurrency, setToCurrency] = useState('ILS');
 
     const onClickAddPair = () => {
         addExchangePair(fromCurrency, toCurrency);
-        // // TODO Remove addExchange
-        // addExchange(fromCurrency, toCurrency);
     }
 
     const onFromurrencyChange = (fromCurr) => {

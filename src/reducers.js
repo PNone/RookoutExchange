@@ -1,7 +1,7 @@
 import { storeData } from "../helpers/localStorage";
 
 
-const exchangePairsReducer = (state, action) => {
+export const exchangePairsReducer = (state, action) => {
     switch (action.type) {
       case 'ADD_EXCHANGE_PAIR':
         let newPairs = [];
@@ -25,9 +25,4 @@ const exchangePairsReducer = (state, action) => {
       default:
         throw new Error('Invalid Action Type')
     }
-  }
-
-export default {
-    exchangePairsReducer,
-    
-};
+  };

@@ -21,17 +21,16 @@ function ExchangeTable({ deletePair, data }) {
             Header: 'Rate',
             accessor: 'ask',
         },
-        // TODO Uncomment and fix
-        // {
-        //     Header: 'Delete',
-        //     accessor: 'delete',
-        //     Cell: (row) => (
-        //         <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-        //             onClick={deletePair(row.index)}>
-        //             Delete
-        //         </span>
-        //     )
-        // },
+        {
+            Header: 'Delete',
+            accessor: 'delete',
+            Cell: (row) => (
+                <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                    onClick={deletePair(row.index)}>
+                    Delete
+                </span>
+            )
+        },
     ];
 
     // Use the state and functions returned from useTable to build your UI
