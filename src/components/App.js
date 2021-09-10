@@ -5,75 +5,101 @@ import ExchangeInput from './ExchangeInput';
 import io from 'socket.io-client';
 import { getData, storeData } from "../helpers/localStorage";
 import { processMessage } from "../helpers/parseExchanges";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useReducer } from 'react';
 
 function App() {
+  
+
+
+
   // Use hook for the socket and exchange pairs
-  const [exchangePairs, setExchangePairs] = useState(getData('exchangePairs', []));
+  const [exchangePairs, dispatchexchangePairs] = useReducer(exchangePairsReducer, getData('exchangePairs', []));// useState(getData('exchangePairs', []));
   const [exchanges, setExchanges] = useState(getData('exchanges', []));
   const [exchangesInitMetadata, setExchangesInitMetadata] = useState({});
+  // TODO Remove
+  const totalExchanges = [{ 'firstCoin': 'USD', 'secondCoin': 'ILS', 'ask': 3.2 }, { 'firstCoin': 'USD', 'secondCoin': 'EUR', 'ask': 0.98 }];
 
-  const addExchangePair = (firstCoin, secondCoin) => {
-    setExchangePairs((currPairs) => {
-      const newPairs = [ ...currPairs ];
-      newPairs.push(`${firstCoin}${secondCoin}`);
-      storeData('exchangePairs', newPairs);
-      return newPairs;
-    });
-  }
-
-  const deletePair = (index) => {
-    setExchangePairs((currPairs) => {
-      const newPairs = [ ...currPairs ];
-      newPairs.splice(index, 1);
-      storeData('exchangePairs', newPairs);
-      return newPairs;
-    });
-  }
-
-  // When page is mounted (inserted into the DOM) or updated
-  useEffect(() => {
-    setExchanges([{'firstCoin': 'USD', 'secondCoin': 'ILS', 'ask': 3.2}, {'firstCoin': 'USD', 'secondCoin': 'EUR', 'ask': 0.98}])
-
-    // const newSocket = io(`${process.env.EXCHANGE_WEBSOCKET_URL}?api-key=${process.env.EXCHANGE_API_KEY}`);
-    // const exchangeListener = (data) => {
-    //   const parsedData = processMessage(data, exchangesInitMetadata);
-    //   if (!!parsedData.initMetadata) {
-    //     setExchangesInitMetadata(parsedData.initMetadata);
+  const addExchangePair = useCallback((firstCoin, secondCoin) => {
+    const formattedPair = `${firstCoin}${secondCoin}`;
+    dispatchexchangePairs({ type: 'ADD_EXCHANGE_PAIR', formattedPair });
+    // setExchangePairs((currPairs) => {
+    //   let newPairs = [];
+    //   if (!!currPairs) {
+    //     newPairs = [...currPairs];
     //   }
-    //   else if (!!parsedData.incomingData) {
-    //     setExchanges(parsedData.incomingData);
-    //     storeData('exchanges', parsedData.incomingData);
+    //   const formattedPair = `${firstCoin}${secondCoin}`;
+    //   if (!newPairs.includes(formattedPair)) {
+    //     newPairs.push(formattedPair);
+    //     storeData('exchangePairs', newPairs);
+    //     return newPairs;
     //   }
-    //   else {
-    //     console.warn(parsedData.errResp);
+    // });
+  }, []);
+
+  // TODO Remove
+  // const addExchange = (firstCoin, secondCoin)  => {
+  //   setExchanges(() => [{'firstCoin': firstCoin, 'secondCoin': secondCoin, 'ask': 3.2}]);
+  // }
+
+  const deletePair = useCallback((index) => {
+    dispatchexchangePairs({ type: 'REMOVE_EXCHANGE_PAIR', index });
+    // setExchangePairs((currPairs) => {
+    //   let newPairs = [];
+    //   if (currPairs && currPairs.length > 0) {
+    //     newPairs = [...currPairs];
+    //     newPairs.splice(index, 1);
     //   }
-      
-    // };
+    //   if (!currPairs || currPairs.length !== newPairs.length) {
+    //     storeData('exchangePairs', newPairs);
+    //     return newPairs;
+    //   }
+    // });
+  }, []);
 
-    // const connectionListener = function () {
-    //   newSocket.send(JSON.stringify({ "pairs": exchangePairs }));
-    // }
+  // TODO Uncomment
+  // // When page is mounted (inserted into the DOM) or updated
+  // useEffect(() => {
 
-    // const onConnectionError = function (error) {
-    //   console.log("Connection Error: " + error.toString());
-    // };
+  //   const newSocket = io(`${process.env.EXCHANGE_WEBSOCKET_URL}?api-key=${process.env.EXCHANGE_API_KEY}`);
+  //   const exchangeListener = (data) => {
+  //     const parsedData = processMessage(data, exchangesInitMetadata);
+  //     if (!!parsedData.initMetadata) {
+  //       setExchangesInitMetadata(parsedData.initMetadata);
+  //     }
+  //     else if (!!parsedData.incomingData) {
+  //       setExchanges(parsedData.incomingData);
+  //       storeData('exchanges', parsedData.incomingData);
+  //     }
+  //     else {
+  //       console.warn(parsedData.errResp);
+  //     }
 
-    // newSocket.on('connect', connectionListener);
-    // newSocket.on('error', onConnectionError);
-    // newSocket.on('message', exchangeListener);
-    // newSocket.connect();
+  //   };
 
-    // // When page is about to be unmounted is destroyed
-    // return () => {
-    //   newSocket.off('connect', connectionListener);
-    //   newSocket.off('error', onConnectionError);
-    //   newSocket.off('message', exchangeListener);
-    //   newSocket.close();
-    // }
-  }, [exchangePairs, exchangesInitMetadata]);
+  //   const connectionListener = function () {
+  //     newSocket.send(JSON.stringify({ "pairs": exchangePairs }));
+  //   }
+
+  //   const onConnectionError = function (error) {
+  //     console.log("Connection Error: " + error.toString());
+  //   };
+
+  //   newSocket.on('connect', connectionListener);
+  //   newSocket.on('error', onConnectionError);
+  //   newSocket.on('message', exchangeListener);
+  //   newSocket.connect();
+
+  //   // When page is about to be unmounted is destroyed
+  //   return () => {
+  //     newSocket.off('connect', connectionListener);
+  //     newSocket.off('error', onConnectionError);
+  //     newSocket.off('message', exchangeListener);
+  //     newSocket.close();
+  //   }
+  // }, [exchangePairs, exchangesInitMetadata]);
 
 
+  // TODO Remove addExchange
   return (
     <div className="App">
       <ExchangeTable deletePair={deletePair} data={exchanges} />

@@ -9,7 +9,7 @@ export const getData = (key, defaultValue=null) => {
 			finalValue = defaultValue;
 		}
 		else {
-			finalValue = JSON.parse();
+			finalValue = JSON.parse(value);
 		}
 		return finalValue;
 	} catch (err) {
