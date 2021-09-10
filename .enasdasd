@@ -1,0 +1,2 @@
+EXCHANGE_WEBSOCKET_URL=wss://api.xchangeapi.com/websocket/live
+EXCHANGE_API_KEY=6q5frxPID0Ve1A0WZPjmvLGFTPKxppVA
