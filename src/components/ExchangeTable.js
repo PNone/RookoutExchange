@@ -23,12 +23,13 @@ function ExchangeTable({ deletePair, data }) {
         },
         {
             Header: 'Delete',
-            accessor: 'delete',
-            Cell: (row) => (
-                <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-                    onClick={deletePair(row.index)}>
-                    Delete
-                </span>
+            // accessor: 'delete',
+            Cell: ({row}) => (
+                <button style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }} onClick={() => deletePair(row.index)}>Delete</button>
+                // <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                //     onClick={deletePair(row.index)}>
+                //     Delete
+                // </span>
             )
         },
     ];
