@@ -32,6 +32,8 @@ export const CURRENCIES = {
     'XAG': 'Silver (troy ounce)',
     'XAU': 'Gold (troy ounce)',
     'XPD': 'Palladium',
+    'XPT': 'Platinum',
+    'XRP': 'XRP',
     'ZAR': 'South African Rand',
 
 }
@@ -78,7 +80,7 @@ export const AVAILABLE_PAIRS = {
     'NZDJPY': 'New Zealand Dollar	Japanese Yen',
     'USDSEK': 'US Dollar	Swedish Krona',
     'XAUUSD': 'Gold (troy ounce)	US Dollar',
-    'XRPUSD': '	US Dollar',
+    'XRPUSD': 'XRP	US Dollar',
     'NZDCAD': 'New Zealand Dollar	Canadian Dollar',
     'EURSEK': 'Euro	Swedish Krona',
     'XAGUSD': 'Silver (troy ounce)	US Dollar',
