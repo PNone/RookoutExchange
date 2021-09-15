@@ -3,27 +3,24 @@ import { CURRENCIES } from './helpers/parseExchanges';
 
 
 export const exchangePairsReducer = (state, action) => {
+  const pairs = [...state];
   switch (action.type) {
     case 'ADD_EXCHANGE_PAIR':
-      let newPairs = [];
-      if (!!state) {
-        newPairs = [...state];
+      if (pairs.length > 9) {
+        alert('You may only add up to 10 currency pairs!');
       }
-      if (!newPairs.includes(action.pair)) {
-        newPairs.push(action.pair);
-
+      else if (!pairs.includes(action.pair)) {
+        pairs.push(action.pair);
       }
-      storeData('exchangePairs', newPairs);
-      return newPairs;
+      storeData('exchangePairs', pairs);
+      return pairs;
     case 'REMOVE_EXCHANGE_PAIR':
-      let updatedPairs = [];
       if (state && state.length > 0) {
-        updatedPairs = [...state];
-        const index = updatedPairs.findIndex(p => p === action.pair)
-        updatedPairs.splice(index, 1);
+        const index = pairs.findIndex(p => p === action.pair)
+        pairs.splice(index, 1);
       }
-      storeData('exchangePairs', updatedPairs);
-      return updatedPairs;
+      storeData('exchangePairs', pairs);
+      return pairs;
     default:
       throw new Error('Invalid Action Type')
   }
@@ -37,19 +34,19 @@ export const exchangesReducer = (state, action) => {
   
   switch (action.type) {
     case 'ADD_OR_UPDATE_EXCHANGE':
-      const exchangeData = {
-        firstCoin,
-        secondCoin,
-        pair: action.pair,
-        mid: action.mid
-      };
       
       // If pair is in exchanges array, update the exchange
       if (index !== -1) {
-        exchanges[index] = exchangeData;
+        exchanges[index].mid = action.mid;
       }
       // If the exchange is not in the array, add it
       else {
+        const exchangeData = {
+          firstCoin,
+          secondCoin,
+          pair: action.pair,
+          mid: action.mid
+        };
         exchanges.push(exchangeData);
       }
       storeData('exchanges', exchanges);

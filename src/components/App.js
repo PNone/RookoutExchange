@@ -68,6 +68,7 @@ function App() {
 
   const addExchangePair = (pair) => {
     dispatchExchangePairs({ type: 'ADD_EXCHANGE_PAIR', pair });
+    dispatchExchanges({ type: 'ADD_OR_UPDATE_EXCHANGE', pair, mid: null });
   };
 
   const deletePair = useCallback((pair) => {
@@ -101,31 +102,31 @@ function App() {
     // };
 
     // This mechanic prevents the browser from crashing due to too many message events
-    var currencyData;
+    const currencyData = [];
     const flush = () => {
-      const data = JSON.parse(currencyData);
-      dispatchExchanges({ type: 'ADD_OR_UPDATE_EXCHANGE', pair: data.symbol, mid: data.mid });
+      // const data = JSON.parse(currencyData);
+      // dispatchExchanges({ type: 'ADD_OR_UPDATE_EXCHANGE', pair: data.symbol, mid: data.mid });
       // if (data && exchangePairs.includes(data.symbol)) {
       //   dispatchExchanges({ type: 'ADD_OR_UPDATE_EXCHANGE', pair: data.symbol, mid: data.mid });
       // }
-      // for (const value of currencyData.splice(currencyData.length - 10)) {
-      //   // let data;
-      //   //   try {
-      //   //       data = JSON.parse(str);
-      //   //   } catch (e) {
-      //   //       data = null;
-      //   //   }
-      //   const data = value && value[0] === '{' ? JSON.parse(value) : null;
-      //   if (data && exchangePairs.includes(data.symbol)) {
-      //     dispatchExchanges({ type: 'ADD_OR_UPDATE_EXCHANGE', pair: data.symbol, mid: data.mid });
-      //   }
-      // }
-      // currencyData.splice(0);
+      for (const value of currencyData) {
+        // let data;
+        //   try {
+        //       data = JSON.parse(str);
+        //   } catch (e) {
+        //       data = null;
+        //   }
+        const data = value && value[0] === '{' ? JSON.parse(value) : null;
+        if (data && exchangePairs.includes(data.symbol)) {
+          dispatchExchanges({ type: 'ADD_OR_UPDATE_EXCHANGE', pair: data.symbol, mid: data.mid });
+        }
+      }
+      currencyData.splice(0);
     };
-    const timer = setInterval(flush, 10 * 1000);
+    const timer = setInterval(flush, 15 * 1000);
 
     const onMessage = function (message) {
-      currencyData = message.data;
+      currencyData.push(message.data);
       // const data = JSON.parse(message.data);
       // dispatchExchanges({ type: 'ADD_OR_UPDATE_EXCHANGE', pair: data.symbol, mid: data.mid });
     };
