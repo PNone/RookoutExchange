@@ -1,21 +1,15 @@
 export const CURRENCIES = {
     'AUD': 'Austalian Dollar',
-    'BGN': 'Bulgarian Lev',
-    'BRL': 'Brazilian Real',
     'BTC': 'Bitcoin',
     'CAD': 'Canadian Dollar',
     'CHF': 'Swiss Franc',
     'CNH': 'Chinese Yuan',
-    'CNY': 'Chinese Yuan',
-    'CZK': 'Czech Koruna',
     'DKK': 'Danish Krone',
     'ETH': 'Ethereum',
     'EUR': 'Euro',
     'GBP': 'Pound Sterling',
     'HKD': 'Hong Kong Dollar',
     'HUF': 'Hungarian Forint',
-    'ILS': 'Israeli New Shekel',
-    'INR': 'Indian Rupee',
     'JPY': 'Japanese Yen',
     'LTC': 'Litecoin',
     'MXN': 'Mexican Peso',
@@ -27,7 +21,6 @@ export const CURRENCIES = {
     'SEK': 'Swedish Krona',
     'SGD': 'Singapore Dollar',
     'TRY': 'Turkish Lira',
-    'UAH': 'Ukrainian Hryvnia',
     'USD': 'United States Dollar',
     'XAG': 'Silver (troy ounce)',
     'XAU': 'Gold (troy ounce)',
@@ -38,7 +31,7 @@ export const CURRENCIES = {
 
 }
 
-export const AVAILABLE_PAIRS = {
+const AVAILABLE_PAIRS = {
     'USDJPY': 'US Dollar  Japanese Yen',
     'EURUSD': 'Euro  US Dollar',
     'USDMXN': 'US Dollar  Mexican Peso',
@@ -101,55 +94,29 @@ export const AVAILABLE_PAIRS = {
     'NOKJPY': 'Norwegian Krone  Japanese Yen',
     'CADCHF': 'Canadian Dollar  Swiss Franc',
     'USDRUB': 'US Dollar  Russian Ruble'
-}
-
-function unpackInit(data) {
-    return JSON.parse(data);
 };
 
-function unpackErrPair(data) {
-    return JSON.parse(data);
-};
-
-function unpackData(data, initMetadata) {
-    const inc = data.split('|');
-    const out = {};
-    for (let i in initMetadata.order) {
-        out[initMetadata.order[i]] = inc[i];
-    };
-    out['firstCoin'] = CURRENCIES[initMetadata.mapping[out['name']].substring(0, 3)];
-    out['secondCoin'] = CURRENCIES[initMetadata.mapping[out['name']].substring(3)];
-    out['ask'] = initMetadata.mapping[out['ask']];
-    // out["name"] = initMetadata.mapping[out['name']];
-    // out["time"] = parseFloat(out["time"]) / initMetadata.time_mult;
-    // out["time"] += initMetadata.start_time;
-    return out;
-};
-
-export function processMessage(data, initMetadata = {}) {
-    const messageType = data.substring(0, 1);
-    const msg = data.substring(1);
-    const response = { 'initMetadata': null, 'incomingData': null, 'errResp': null };
-    switch (messageType) {
-        // Initial message
-        case '0':
-            response.initMetadata = unpackInit(msg);
-            break;
-        // Errors
-        case '7':
-        case '8':
-        case '9':
-            response.errResp = unpackErrPair(msg);
-            break;
-        // Currency rate update
-        case '1':
-            response.incomingData = unpackData(msg, initMetadata);
-            break;
-        // Ping
-        case '2':
-            break;
-        default:
-            break;
+export const COLUMNS = [
+    {
+        title: 'Currency Pair',
+        field: 'pair',
+        lookup: AVAILABLE_PAIRS,
+        editable: 'onAdd'
+    },
+    {
+        title: 'First Coin',
+        field: 'firstCoin',
+        editable: 'never'
+    },
+    {
+        title: 'Second Coin',
+        field: 'secondCoin',
+        editable: 'never'
+    },
+    {
+        title: 'Rate',
+        field: 'mid',
+        type: 'numeric',
+        editable: 'never'
     }
-    return response;
-}
+];

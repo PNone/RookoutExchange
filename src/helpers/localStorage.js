@@ -1,10 +1,10 @@
-export const getData = (key, defaultValue=null) => {
+export const getData = (key, defaultValue = null) => {
 	if (!localStorage) return;
 
 	try {
 		let finalValue;
 		const value = localStorage.getItem(key);
-		
+
 		if (!value) {
 			finalValue = defaultValue;
 		}

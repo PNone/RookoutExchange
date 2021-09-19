@@ -1,17 +1,12 @@
 import { storeData } from './helpers/localStorage';
-import { CURRENCIES } from './helpers/parseExchanges';
+import { CURRENCIES } from './helpers/constants';
 
 
 export const exchangePairsReducer = (state, action) => {
   const pairs = [...state];
   switch (action.type) {
     case 'ADD_EXCHANGE_PAIR':
-      if (pairs.length > 9) {
-        alert('You may only add up to 10 currency pairs!');
-      }
-      else if (!pairs.includes(action.pair)) {
-        pairs.push(action.pair);
-      }
+      pairs.push(action.pair);
       storeData('exchangePairs', pairs);
       return pairs;
     case 'REMOVE_EXCHANGE_PAIR':
@@ -22,7 +17,7 @@ export const exchangePairsReducer = (state, action) => {
       storeData('exchangePairs', pairs);
       return pairs;
     default:
-      throw new Error('Invalid Action Type')
+      throw new Error('Invalid Action Type');
   }
 };
 
@@ -59,24 +54,6 @@ export const exchangesReducer = (state, action) => {
       storeData('exchanges', exchanges);
       return exchanges;
     default:
-      throw new Error('Invalid Action Type')
+      throw new Error('Invalid Action Type');
   }
 };
-// export const exchangesReducer = (state, action) => {
-//   switch (action.type) {
-//     case 'UPDATE_EXCHANGES':
-//       const exchangesInitMetadata = state.exchangesInitMetadata;
-//       const exchanges = action.exchanges;
-//       const updatedExchanges = { exchangesInitMetadata, exchanges };
-//       storeData('exchanges', exchanges);
-//       return updatedExchanges;
-//     case 'SET_INIT_METADATA':
-//       const initMetadata = action.exchangesInitMetadata;
-//       const exchangesForInit = state.exchanges;
-//       const currExchanges = { exchangesInitMetadata: initMetadata, exchanges: exchangesForInit };
-//       storeData('exchanges', exchangesForInit);
-//       return currExchanges;
-//     default:
-//       throw new Error('Invalid Action Type')
-//   }
-// };
