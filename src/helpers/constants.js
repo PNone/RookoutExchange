@@ -31,7 +31,7 @@ export const CURRENCIES = {
 
 }
 
-const AVAILABLE_PAIRS = {
+export const AVAILABLE_PAIRS = {
     'USDJPY': 'US Dollar  Japanese Yen',
     'EURUSD': 'Euro  US Dollar',
     'USDMXN': 'US Dollar  Mexican Peso',
@@ -95,28 +95,3 @@ const AVAILABLE_PAIRS = {
     'CADCHF': 'Canadian Dollar  Swiss Franc',
     'USDRUB': 'US Dollar  Russian Ruble'
 };
-
-export const COLUMNS = [
-    {
-        title: 'Currency Pair',
-        field: 'pair',
-        lookup: AVAILABLE_PAIRS,
-        editable: 'onAdd'
-    },
-    {
-        title: 'First Coin',
-        field: 'firstCoin',
-        editable: 'never'
-    },
-    {
-        title: 'Second Coin',
-        field: 'secondCoin',
-        editable: 'never'
-    },
-    {
-        title: 'Rate',
-        field: 'mid',
-        type: 'numeric',
-        editable: 'never'
-    }
-];
